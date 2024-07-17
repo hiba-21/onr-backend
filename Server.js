@@ -45,7 +45,7 @@ app.get("*",(req,res) => {
 module.exports.funcName = async (context, req) => {
   context.res = await handler(context, req);
 } */
-app.listen("/",()=> {
-    return "ijlknlkknn"
+app.get("/",(req, res)=> {
+    res.status(200).json("ijlknlkknn");
 })
 module.exports = app;
