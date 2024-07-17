@@ -2,15 +2,7 @@ const mongoose = require("mongoose");
 const dotenv = require("dotenv").config();
 const app = require("./App");
 const serverless = require('serverless-http');
-const express = require('express');
 
-const app = express();
- 
-app.use(cors({
-    origin: ["https://onrtech-front.vercel.app", "*"],
-    methods: ["GET,POST,DELETE,PUT,PATCH"],
-    credentials: true,
-}));
 
 
 // DB Connection
