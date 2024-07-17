@@ -5,7 +5,7 @@ const serverless = require('serverless-http');
 
 
 
-// DB Connection
+/* // DB Connection
 const DBConnectionHandler = require("./Utils/DBconnect");
 DBConnectionHandler();
 
@@ -30,7 +30,7 @@ app.use((err, req, res, next) => {
             res.status(500).send("Something went wrong");
         }
     }
-});
+}); */
 
 /*app.use(express.static("./client-main/dist"));
 app.get("*",(req,res) => {
@@ -41,7 +41,8 @@ app.get("*",(req,res) => {
 /*app.listen(port, () => {
     console.log(`Server is running on port http://localhost:${port}`);
 });*/
-const handler = serverless(app);
+/* const handler = serverless(app);
 module.exports.funcName = async (context, req) => {
   context.res = await handler(context, req);
-}
+} */
+module.exports.handler = serverless(app);
