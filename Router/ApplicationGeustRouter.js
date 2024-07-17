@@ -10,7 +10,7 @@ const ApplicationController = require("../Controller/ApplicationController");
 
 // Middlewares
 const { checkInput } = require("../Validation/ApplicationDataRules");
-const { checkGuestApplications } = require("../middleware/GuestMiddleware");
+//const { checkGuestApplications } = require("../middleware/GuestMiddleware");
 const {
     inputValidationMiddleware,
 } = require("../Validation/ValidationMiddleware");
