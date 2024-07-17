@@ -45,4 +45,7 @@ app.get("*",(req,res) => {
 module.exports.funcName = async (context, req) => {
   context.res = await handler(context, req);
 } */
-module.exports.handler = serverless(app);
+  const handler = serverless(app);
+  module.exports.funcName = async (context, req) => {
+    context.res = await handler(context, req);
+  }
