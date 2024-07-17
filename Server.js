@@ -45,4 +45,7 @@ app.get("*",(req,res) => {
 module.exports.funcName = async (context, req) => {
   context.res = await handler(context, req);
 } */
+app.listen("/",()=> {
+    return "ijlknlkknn"
+})
 module.exports = app;
