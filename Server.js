@@ -45,4 +45,4 @@ app.get("*",(req,res) => {
 module.exports.funcName = async (context, req) => {
   context.res = await handler(context, req);
 } */
-module.exports = serverless(app);
+module.exports = app;
