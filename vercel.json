@@ -13,8 +13,13 @@
     }
   ],
   "functions": {
-    "src/pages/*": {
-      "maxDuration": 20
+    "api/test.js": {
+      "memory": 3009,
+      "maxDuration": 30
+    },
+    "api/*.js": {
+      "memory": 3009,
+      "maxDuration": 30
     }
   }
 }
