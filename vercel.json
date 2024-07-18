@@ -13,10 +13,7 @@
     }
   ],
   "functions": {
-    "pages/blog/[hello].tsx": {
-      "memory": 1024
-    },
-    "src/pages/isr/**/*": {
+    "src/pages/*": {
       "maxDuration": 10
     }
   }
