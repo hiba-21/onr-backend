@@ -13,11 +13,7 @@
     }
   ],
   "functions": {
-    "api/test.js": {
-      "memory": 3009,
-      "maxDuration": 30
-    },
-    "api/*.js": {
+    "api/*": {
       "memory": 3009,
       "maxDuration": 30
     }
