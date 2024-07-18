@@ -7,7 +7,7 @@
     }
   ],
   "functions": {
-    "api/v1/**/*.js": {
+    "app/api/**/route.ts": {
       "memory": 1024,
       "maxDuration": 30
     }
