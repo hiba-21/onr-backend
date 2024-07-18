@@ -13,7 +13,7 @@
     }
   ],
   "functions": {
-    "api/*": {
+    "api/v1/*": {
       "memory": 3009,
       "maxDuration": 30
     }
