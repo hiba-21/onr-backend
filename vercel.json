@@ -12,9 +12,7 @@
       "dest": "Server.js"
     }
   ],
-  "functions": [
-    {
+  "functions": {
       "maxDuration": 10
-    }
-  ]
+  }
 }
