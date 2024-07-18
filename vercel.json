@@ -1,21 +1,20 @@
 {
-    "version": 2,
-    "builds": [
-      {
-        "src": "Server.js",
-        "use": "@vercel/node"
-      }
-    ],
-    "routes": [
-      {
-        "src": "/(.*)",
-        "dest": "Server.js"
-      }
-    ],
-    "functions": {
-    "src/pages/isr/**/*": {
+  "version": 2,
+  "builds": [
+    {
+      "src": "Server.js",
+      "use": "@vercel/node"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "Server.js"
+    }
+  ],
+  "functions": [
+    {
       "maxDuration": 10
     }
-  }
-    
-  }
+  ]
+}
