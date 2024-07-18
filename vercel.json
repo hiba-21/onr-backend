@@ -7,7 +7,7 @@
     }
   ],
   "functions": {
-    "router/*.js": {
+    "Server.js": {
       "memory": 1024,
       "maxDuration": 30
     }
