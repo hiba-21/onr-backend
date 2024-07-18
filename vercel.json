@@ -7,7 +7,7 @@
     }
   ],
   "functions": {
-    "app/api/**/route.ts": {
+    "src/routes/routes.jsx": {
       "memory": 1024,
       "maxDuration": 30
     }
