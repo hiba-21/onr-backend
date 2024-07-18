@@ -7,7 +7,7 @@
     }
   ],
   "functions": {
-    "App.js": {
+    "api/users/**/*.js": {
       "memory": 1024,
       "maxDuration": 30
     }
