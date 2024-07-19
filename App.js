@@ -33,7 +33,8 @@ if (!fs.existsSync(uploadDir)) {
     fs.mkdirSync(uploadDir, { recursive: true });
 }*/
 // test test
-
+const DBConnectionHandler = require("./Utils/DBconnect");
+DBConnectionHandler();
 // Custom Middlewares
 const {
     authenticateUser,
