@@ -18,14 +18,14 @@ app.get("/*",(req,res) => {
 });*/
 app.use(express.static(path.join(__dirname, "./public", "../public")));
 app.use(express.json());
-app.use(cors("*"))
-/*app.use(
+//app.use(cors("*"))
+app.use(
     cors({
         origin: ["https://onrtech-front.vercel.app"],
         methods: ["GET,POST,DELETE,PUT,PATCH"],
         credentials: true,
     })
-);*/
+);
 
 /* Configuration de multer pour vérifier et créer le répertoire d'uploads si nécessaire
 const uploadDir = path.join(__dirname, 'uploads');
