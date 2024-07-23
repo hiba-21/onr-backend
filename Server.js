@@ -46,6 +46,6 @@ module.exports.funcName = async (context, req) => {
   context.res = await handler(context, req);
 } */
 app.get("/",(req, res)=> {
-    res.status(200).json("ijlknlkknn");
+    res.status(200).json("ONRWEB Server is running !");
 })
 module.exports = app;
