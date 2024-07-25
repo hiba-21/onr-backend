@@ -27,7 +27,7 @@ ServiceRouter.route('/')
     )
     .delete(authenticateUser, ServiceController.deleteAllServices);
 
-ServiceRouter.get('/my-Services', authenticateUser, ServiceController.getMyServices);
+ServiceRouter.get('/my-services', authenticateUser, ServiceController.getMyServices);
 
 ServiceRouter.route('/:id')
     .get(ServiceController.getSingleService)
