@@ -43,6 +43,7 @@ const {
 // Routers
 const JobRouter = require("./Router/JobRouter");
 const ArticleRouter = require("./Router/ArticleRouter");
+const ServiceRouter = require("./Router/ServiceRouter");
 const UserRouter = require("./Router/UserRouter");
 
 const AuthRouter = require("./Router/AuthRouter");
@@ -52,6 +53,7 @@ const ApplicationGeustRouter = require("./Router/ApplicationGeustRouter");
 // Connecting routes
 app.use("/api/v1/Jobs", JobRouter);
 app.use("/api/v1/Articles", ArticleRouter);
+app.use("/api/v1/Services", ServiceRouter);
 app.use("/api/v1/Users", authenticateUser, UserRouter);
 
 app.use("/api/v1/Auth", AuthRouter);
