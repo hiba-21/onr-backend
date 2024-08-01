@@ -21,7 +21,7 @@ const Email = (options)=>{
 
 const EmailSender = ({name,subject,email,phone,message})=>{
     const options ={ 
-        from: `ONRWEB `,
+        from: `ONRWEB <hibarassas12l@gmail.com>`,
         to : `hibarassas12l@gmail.com`,
         subject: `New message from ONRWEB : ${subject}`,
         html : `
