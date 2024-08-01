@@ -24,8 +24,6 @@ const EmailSender = ({name,subject,email,phone,message})=>{
         to : process.env.SEND_TO,
         subject: `New message from Onrtech : ${subject}`,
         html : `
-        <div>
-
         <p>Hello </p>
         <p>You got a new message from <strong>${name}</strong></p>
         <p>Email :
@@ -37,7 +35,7 @@ const EmailSender = ({name,subject,email,phone,message})=>{
         </p>
         <p>Phone :<strong>&nbsp;</strong>&nbsp;<strong>${phone}</strong></p>
         <p style="padding: 12px; border-left: 4px solid #d0d0d0; font-style: italic;">${message}</p>
-        </div>`
+    `
     };
     Email(options)
 }
