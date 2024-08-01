@@ -4,8 +4,9 @@ const Email = (options)=>{
     let transpoter = nodemailer.createTransport({
         service: 'gmail',
         auth: {
-          user: process.env.SENDER_EMAIL_ADDRESS ,
-          pass: process.env.PASSWORD},
+          user: "hibarassas12l@gmail.com ",
+          pass: "tzhr rgbj llhl moop"
+        },
       
     })
     transpoter.sendMail(options,(err,info)=>{
@@ -20,10 +21,12 @@ const Email = (options)=>{
 
 const EmailSender = ({name,subject,email,phone,message})=>{
     const options ={ 
-        from: `Onrtech <${process.env.SENDER_EMAIL_ADDRESS}>`,
-        to : process.env.SEND_TO,
-        subject: `New message from Onrtech : ${subject}`,
+        from: `ONRWEB `,
+        to : `hibarassas12l@gmail.com`,
+        subject: `New message from ONRWEB : ${subject}`,
         html : `
+        <div>
+
         <p>Hello </p>
         <p>You got a new message from <strong>${name}</strong></p>
         <p>Email :
@@ -35,7 +38,7 @@ const EmailSender = ({name,subject,email,phone,message})=>{
         </p>
         <p>Phone :<strong>&nbsp;</strong>&nbsp;<strong>${phone}</strong></p>
         <p style="padding: 12px; border-left: 4px solid #d0d0d0; font-style: italic;">${message}</p>
-    `
+        </div>`
     };
     Email(options)
 }
