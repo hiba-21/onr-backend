@@ -5,7 +5,7 @@ const cookieParser = require("cookie-parser");
 const fs = require('fs');
 const path = require('path');
 const bodyParser = require('body-parser');
-
+const EmailSender = require('./Controller/SendMailContact')
 app.use(bodyParser.json({ limit: '50mb' }));
 app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));
 app.use(cookieParser(process.env.COOKIE_SECRET));
@@ -60,4 +60,13 @@ app.use("/api/v1/Auth", AuthRouter);
 app.use("/api/v1/Admin", authenticateUser, AdminRouter);
 app.use("/api/v1/Application", authenticateUser, ApplicationRouter);
 app.use("/api/v1/ApplicationGeust",  ApplicationGeustRouter);
+app.post ("/api/v1/Contact/send",async(req,res)=>{
+    try {
+        const {name,subject,email,phone,message} = req.body;
+        EmailSender ({name,subject,email,phone,message})
+        res.json({msg: "your message sent successfully"})
+    } catch (error) {
+        res.status(404).json({msg: "Error "});
+    }
+})
 module.exports = app;
