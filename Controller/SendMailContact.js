@@ -5,7 +5,7 @@ const Email = (options)=>{
         service: 'gmail',
         auth: {
           user: "hibarassas12l@gmail.com ",
-          pass: "tzhr rgbj llhl moop"
+          pass: "tzhrrgbjllhlmoop"
         },
       
     })
