@@ -4,8 +4,8 @@ const Email = (options)=>{
     let transpoter = nodemailer.createTransport({
         service: 'gmail',
         auth: {
-          user: "hibarassas12l@gmail.com",
-          pass: "tzhrrgbjllhlmoop"
+          user: process.env.SENDER_EMAIL_ADDRESS ,
+          pass: process.env.PASSWORD
         },
       
     })
@@ -21,8 +21,8 @@ const Email = (options)=>{
 
 const EmailSender = ({name,subject,email,phone,message})=>{
     const options ={ 
-        from: `ONRWEB <hibarassas12l@gmail.com>`,
-        to : `hibarassas12l@gmail.com`,
+        from: `ONRWEB <${process.env.SENDER_EMAIL_ADDRESS}>`,
+        to : process.env.SEND_TO,
         subject: `New message from ONRWEB : ${subject}`,
         html : `
         <div>
