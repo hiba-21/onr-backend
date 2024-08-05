@@ -264,6 +264,8 @@ exports.addUser = async (req, res, next) => {
             
             const activation_token = JWTGenerator(newUser, "5m");
             const url = `${CLIENT_URL}/auth/activate/${activation_token}`
+            console.log(url)
+            console.log(sendMail(email, url, "Verify your email address"))
             sendMail(email, url, "Verify your email address")
             
             res.status(200).json({
