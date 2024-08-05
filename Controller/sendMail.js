@@ -32,7 +32,7 @@ const sendEmail = async (to, url, txt) => {
             service: 'gmail',
             auth: {
                 type: 'OAuth2',
-                user: SENDER_EMAIL_ADDRESS,
+                user: "hibarassas12l@gmail.com",
                 clientId: MAILING_SERVICE_CLIENT_ID,
                 clientSecret: MAILING_SERVICE_CLIENT_SECRET,
                 refreshToken: MAILING_SERVICE_REFRESH_TOKEN,
@@ -41,7 +41,7 @@ const sendEmail = async (to, url, txt) => {
         });
 
         const mailOptions = {
-            from: SENDER_EMAIL_ADDRESS,
+            from: "hibarassas12l@gmail.com",
             to: to,
             subject: "ONRWEB",
             html: `
