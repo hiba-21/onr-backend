@@ -29,7 +29,9 @@ const sendEmail = async (to, url, txt) => {
         }
 
         const smtpTransport = nodemailer.createTransport({
-            service: 'gmail',
+            host: "smtp.gmail.com",
+            port: 465,
+            secure: true,
             auth: {
                 type: 'OAuth2',
                 user: "hibarassas12l@gmail.com",
