@@ -8,8 +8,9 @@ const JWTGenerator = require("../Utils/JWTGenerator");
 const sendMail = require('./sendMail');
 const { OAuth2Client } = require('google-auth-library');
 const { bucket } = require("../Firebase/firebaseConfig");
-
-
+const PendingUserModel = require('../Model/PendingUserModel');
+const nodemailer = require('nodemailer');
+const crypto = require('crypto');
 const client = new OAuth2Client(process.env.MAILING_SERVICE_CLIENT_ID);
 const {CLIENT_URL} = process.env
 
