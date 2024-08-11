@@ -19,6 +19,11 @@ exports.getAllInfo = async (req, res, next) => {
         const pendingJobs = await JobModel.find({ jobStatus: "pending" });
         const declinedJobs = await JobModel.find({ jobStatus: "declined" });
 
+        const CDD =await JobModel.find({ jobType: "CDD" });
+        const CDI =await JobModel.find({ jobType: "CDI" });
+        const INTERNSHIP =await JobModel.find({ jobType: "internship" });
+        const FREELANCE =await JobModel.find({ jobType: "freelance" });
+
         res.status(200).json({
             user: users?.length || 0,
             admin: admin?.length || 0,
@@ -28,11 +33,17 @@ exports.getAllInfo = async (req, res, next) => {
             interview: interviewJobs?.length || 0,
             pending: pendingJobs?.length || 0,
             declined: declinedJobs?.length || 0,
+            CDD :CDD?.length || 0,
+            CDI :CDI?.length || 0,
+            INTERNSHIP :INTERNSHIP?.length || 0,
+            FREELANCE :FREELANCE?.length || 0,
+
         });
     } catch (error) {
         next(createError(500, error.message));
     }
 };
+
 
 exports.monthlyInfo = async (req, res, next) => {
    

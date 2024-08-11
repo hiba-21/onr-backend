@@ -14,7 +14,12 @@ const {
     userAuthorizationHandler,
 } = require("./../Middleware/UserAuthorizationMiddleware");
 
+
 // Routes
+JobRouter.get(
+    "/info",
+    JobController.getAllInfo
+);
 JobRouter.route("/")
     .get(JobController.getAllJobs)
     .post(

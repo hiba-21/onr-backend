@@ -4,6 +4,27 @@ const ApplicationModel = require("../Model/ApplicationModel");
 const createError = require("http-errors");
 const mongoose = require("mongoose");
 
+exports.getAllInfo = async (req, res, next) => {
+    try {
+        const jobs = await JobModel.find({});
+
+        const CDD =await JobModel.find({ jobType: "CDD" });
+        const CDI =await JobModel.find({ jobType: "CDI" });
+        const INTERNSHIP =await JobModel.find({ jobType: "internship" });
+        const FREELANCE =await JobModel.find({ jobType: "freelance" });
+
+        res.status(200).json({
+            job: jobs?.length || 0,
+            CDD :CDD?.length || 0,
+            CDI :CDI?.length || 0,
+            INTERNSHIP :INTERNSHIP?.length || 0,
+            FREELANCE :FREELANCE?.length || 0,
+
+        });
+    } catch (error) {
+        next(createError(500, error.message));
+    }
+};
 module.exports.getAllJobs = async (req, res, next) => {
     try {
         const filters = { ...req.query }; // faire une copie pour que l'original ne soit pas moidifié
