@@ -251,7 +251,7 @@ exports.getSingleUser = async (req, res, next) => {
     res.send("get single user");
 };
 
-exports.addUser = async (req, res, next) => {
+/*exports.addUser = async (req, res, next) => {
     const {username, email, password} = req.body;
     try {
         const isUserExists = await UserModel.findOne({ email});
@@ -297,7 +297,92 @@ exports.activateEmail = async (req, res) => {
     } catch (err) {
         return res.status(500).json({msg: err.message})
     }
-},
+},*/
+exports.addUser = async (req, res, next) => {
+    const data = req.body;
+    try {
+        const isUserExists = await PendingUserModel.findOne({ email: data.email });
+        if (isUserExists) {
+            return next(createError(500, "Email Already exists"));
+        } else {
+            const isFirstUser = (await UserModel.countDocuments()) === 0;
+            data.role = isFirstUser ? "admin" : "user";
+
+            // Create a verification token
+            const verificationToken = crypto.randomBytes(32).toString('hex');
+
+            const newPendingUser = new PendingUserModel({
+                ...data,
+                verificationToken
+            });
+            await newPendingUser.save();  // Save user in the pending collection
+
+            // Send verification email
+            const transporter = nodemailer.createTransport({
+                service: 'gmail', // ou un autre service
+                auth: {
+                    user: 'hibarassas12l@gmail.com',
+                    pass: 'tzhr rgbj llhl moop'
+                }
+            });
+
+            const mailOptions = {
+                from: 'hibarassas12l@gmail.com',
+                to: data.email,
+                subject: 'Account Verification',
+                text: `Please verify your account by clicking the link: http://localhost:5174/activate/${verificationToken}`
+            };
+
+            transporter.sendMail(mailOptions, (error, info) => {
+                if (error) {
+                    return next(createError(500, "Failed to send verification email"));
+                }
+            });
+
+            res.status(200).json({
+                status: true,
+                message: "Registered Successfully. Please verify your email."
+            });
+        }
+    } catch (error) {
+        next(createError(500, error.message));
+    }
+};
+exports.verifyEmail = async (req, res, next) => {
+    const { token } = req.params;
+    console.log(`Received token: ${token}`); // Debugging
+    try {
+        const pendingUser = await PendingUserModel.findOne({ verificationToken: token });
+        if (!pendingUser) {
+            console.log('Invalid or expired token'); // Debugging
+            return res.status(400).json({ message: 'Invalid or expired token' });
+        }
+
+        // Transfer to the main user collection with isVerified: true
+        const newUser = new UserModel({
+            username: pendingUser.username,
+            email: pendingUser.email,
+            password: pendingUser.password,
+            location: pendingUser.location,
+            gender: pendingUser.gender,
+            role: pendingUser.role,
+            resume: pendingUser.resume,
+            isVerified: true // Set isVerified to true
+        });
+
+        await newUser.save(); // Save user in the main collection
+
+        // Remove from pending collection
+        await PendingUserModel.deleteOne({ verificationToken: token });
+
+        console.log('Email verified and user activated'); // Debugging
+        res.status(200).json({ message: 'Email verified successfully. Your account is now active.' });
+    } catch (error) {
+        console.error('Error during verification:', error); // Debugging
+        next(createError(500, error.message));
+    }
+};
+
 exports.loginUser = async (req, res, next) => {
     try {
         const { email, password } = req.body;

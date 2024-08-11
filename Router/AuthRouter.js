@@ -1,18 +1,17 @@
 const express = require("express");
 const AuthRouter = express.Router(); // create a router
 
-const {
-    authenticateUser,authenticate
-} = require("./../Middleware/UserAuthenticationMiddleware");
+// Middleware
+const { authenticateUser } = require("./../Middleware/UserAuthenticationMiddleware");
 
 // Controllers
 const UserController = require("../Controller/UserController");
 
+// Validation
 const {
     checkRegisterInput,
     checkLoginInput,
     checkForgotPasswordInput,
-    checkRegisterGuestInput,
 } = require("../Validation/UserDataRules");
 
 const {
@@ -31,15 +30,8 @@ AuthRouter.post(
     UserController.addUser
 );
 
+AuthRouter.get("/verify/:token", UserController.verifyEmail); // Route pour activer l'utilisateur via email
 
-/*AuthRouter.post(
-    "/addGuest",
-    
-    inputValidationMiddleware,
-    upload.single('resume'),
-    UserController.addGuestUser
-);*/
-AuthRouter.post("/activation", UserController.activateEmail);
 AuthRouter.post(
     "/login",
     checkLoginInput,
@@ -47,11 +39,10 @@ AuthRouter.post(
     UserController.loginUser
 );
 
-AuthRouter.post("/forgot", checkForgotPasswordInput,UserController.forgotPassword);
-AuthRouter.post("/reset", auth ,UserController.resetPassword);
+AuthRouter.post("/forgot", checkForgotPasswordInput, UserController.forgotPassword);
+AuthRouter.post("/reset/:token",  UserController.resetPassword);
 
-
-/* Social Login*/
+/* Social Login */
 AuthRouter.post("/google_login", UserController.googleLogin);
 
 module.exports = AuthRouter;
