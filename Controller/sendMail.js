@@ -11,16 +11,16 @@ const {
 } = process.env;
 
 const oauth2Client = new OAuth2(
-    MAILING_SERVICE_CLIENT_ID,
-    MAILING_SERVICE_CLIENT_SECRET,
-    MAILING_SERVICE_REFRESH_TOKEN,
+    "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",
+    "297377586108-kbblbsafeiq93bqq1sq0ovqvukdokrjq.apps.googleusercontent.com",
+    "1//04Ltz6URznx8ICgYIARAAGAQSNwF-L9IrGMAS1xe4gr0kXtPuN-zILliFWihkzWP_JDK-I2jBjDbr7nqxlNfMLMmqmzBw2M7CEJs",
     OAUTH_PLAYGROUND
 );
 
 const sendEmail = async (to, url, txt) => {
     try {
         oauth2Client.setCredentials({
-            refresh_token: MAILING_SERVICE_REFRESH_TOKEN
+            refresh_token: "1//04Ltz6URznx8ICgYIARAAGAQSNwF-L9IrGMAS1xe4gr0kXtPuN-zILliFWihkzWP_JDK-I2jBjDbr7nqxlNfMLMmqmzBw2M7CEJs"
         });
 
         const accessToken = await oauth2Client.getAccessToken();
@@ -29,19 +29,21 @@ const sendEmail = async (to, url, txt) => {
         }
 
         const smtpTransport = nodemailer.createTransport({
-            service: 'gmail',
+            host: "smtp.gmail.com",
+            port: 465,
+            secure: true,
             auth: {
                 type: 'OAuth2',
-                user: SENDER_EMAIL_ADDRESS,
-                clientId: MAILING_SERVICE_CLIENT_ID,
-                clientSecret: MAILING_SERVICE_CLIENT_SECRET,
-                refreshToken: MAILING_SERVICE_REFRESH_TOKEN,
+                user: "hibarassas12l@gmail.com",
+                clientId: "297377586108-kbblbsafeiq93bqq1sq0ovqvukdokrjq.apps.googleusercontent.com",
+                clientSecret: "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",
+                refreshToken: "1//04Ltz6URznx8ICgYIARAAGAQSNwF-L9IrGMAS1xe4gr0kXtPuN-zILliFWihkzWP_JDK-I2jBjDbr7nqxlNfMLMmqmzBw2M7CEJs",
                 accessToken: accessToken.token
             }
         });
 
         const mailOptions = {
-            from: SENDER_EMAIL_ADDRESS,
+            from: "hibarassas12l@gmail.com",
             to: to,
             subject: "ONRWEB",
             html: `

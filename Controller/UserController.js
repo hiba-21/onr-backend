@@ -258,12 +258,15 @@ exports.getSingleUser = async (req, res, next) => {
         if (isUserExists) {
             next(createError(500, "Email Already exists"));
         } else {
+            debugger;
             const isFirstUser = (await UserModel.countDocuments()) === 0;
             req.body.role = isFirstUser ? "admin" : "user";
             const newUser = {username, email, password};
             
             const activation_token = JWTGenerator(newUser, "5m");
             const url = `${CLIENT_URL}/auth/activate/${activation_token}`
+            console.log(url)
+            console.log(sendMail(email, url, "Verify your email address"))
             sendMail(email, url, "Verify your email address")
             
             res.status(200).json({
