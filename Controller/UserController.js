@@ -1,16 +1,19 @@
-    
+
 const UserModel = require("../Model/UserModel");
 const createError = require("http-errors");
 const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
 const jwt = require('jsonwebtoken');
 const JWTGenerator = require("../Utils/JWTGenerator");
-const sendMail = require('./sendMail');
+const sendMail1 = require('./sendMail');
 const { OAuth2Client } = require('google-auth-library');
 const { bucket } = require("../Firebase/firebaseConfig");
+const crypto = require('crypto');
 const PendingUserModel = require('../Model/PendingUserModel');
 const nodemailer = require('nodemailer');
-const crypto = require('crypto');
+
+
+
 const client = new OAuth2Client(process.env.MAILING_SERVICE_CLIENT_ID);
 const {CLIENT_URL} = process.env
 
@@ -252,53 +255,6 @@ exports.getSingleUser = async (req, res, next) => {
     res.send("get single user");
 };
 
-/*exports.addUser = async (req, res, next) => {
-    const {username, email, password} = req.body;
-    try {
-        const isUserExists = await UserModel.findOne({ email});
-        if (isUserExists) {
-            next(createError(500, "Email Already exists"));
-        } else {
-            const isFirstUser = (await UserModel.countDocuments()) === 0;
-            req.body.role = isFirstUser ? "admin" : "user";
-            const newUser = {username, email, password};
-            
-            const activation_token = JWTGenerator(newUser, "5m");
-            const url = `${CLIENT_URL}/auth/activate/${activation_token}`
-            sendMail(email, url, "Verify your email address")
-            
-            res.status(200).json({
-                status: true,
-                message: "Registered Successfully! Please activate your email to start.",
-              
-            });
-        }
-    } catch (error) {
-        next(createError(500, error.message));
-    }
-};
-exports.activateEmail = async (req, res) => {
-    try {
-        const {activation_token} = req.body
-        const user = jwt.verify(activation_token, process.env.JWT_SECRET)
-        console.log(user);
-        const {username , email, password} = user
-
-        const check = await UserModel.findOne({email})
-        if(check) return res.status(400).json({msg:"This email already exists."})
-
-        const newUser = new UserModel({
-            username, email, password
-        })
-
-        await newUser.save()
-
-        res.json({msg: "Account has been activated!"})
-
-    } catch (err) {
-        return res.status(500).json({msg: err.message})
-    }
-},*/
 exports.addUser = async (req, res, next) => {
     const data = req.body;
     try {
@@ -384,6 +340,54 @@ exports.verifyEmail = async (req, res, next) => {
     }
 };
 
+
+/*exports.addUser = async (req, res, next) => {
+    const {username, email, password} = req.body;
+    try {
+        const isUserExists = await UserModel.findOne({ email});
+        if (isUserExists) {
+            next(createError(500, "Email Already exists"));
+        } else {
+            const isFirstUser = (await UserModel.countDocuments()) === 0;
+            req.body.role = isFirstUser ? "admin" : "user";
+            const newUser = {username, email, password};
+            
+            const activation_token = JWTGenerator(newUser, "5m");
+            const url = `${CLIENT_URL}/auth/activate/${activation_token}`
+            sendMail(email, url, "Verify your email address")
+            
+            res.status(200).json({
+                status: true,
+                message: "Registered Successfully! Please activate your email to start.",
+              
+            });
+        }
+    } catch (error) {
+        next(createError(500, error.message));
+    }
+};
+exports.activateEmail = async (req, res) => {
+    try {
+        const { activation_token } = req.body;
+        const user = jwt.verify(activation_token, process.env.JWT_SECRET);
+        console.log(user);
+        const { username, email, password } = user;
+
+        const check = await UserModel.findOne({ email });
+        if (check) return res.status(400).json({ msg: "This email already exists." });
+
+        const newUser = new UserModel({
+            username, email, password
+        });
+
+        await newUser.save();
+
+        res.json({ msg: "Account has been activated!" });
+
+    } catch (err) {
+        return res.status(500).json({ msg: err.message });
+    }
+};*/
 exports.loginUser = async (req, res, next) => {
     try {
         const { email, password } = req.body;
@@ -497,7 +501,104 @@ exports.googleLogin = async (req, res) => {
     }
 },
 
-exports.forgotPassword = async (req, res) => {
+exports.forgotPassword = async (req, res, next) => {
+    const { email } = req.body;
+
+    try {
+        const user = await UserModel.findOne({ email });
+        if (!user) {
+            return next(createError(404, "User not found"));
+        }
+
+        const resetToken = jwt.sign({ email: user.email }, process.env.JWT_SECRET, {
+            expiresIn: '1h'
+        });
+
+        const transporter = nodemailer.createTransport({
+            service: 'gmail',
+            auth: {
+                user: 'hibarassas12l@gmail.com',
+                pass: 'tzhr rgbj llhl moop'
+            }
+        });
+
+        const mailOptions = {
+            from: 'hibarassas12l@gmail.com',
+            to: user.email,
+            subject: 'Password Reset',
+            text: `Please reset your password by clicking the link: http://localhost:5174/reset/${user._id}/${resetToken}`
+        };
+
+        transporter.sendMail(mailOptions, (error, info) => {
+            if (error) {
+                return next(createError(500, "Failed to send reset email"));
+            }else {
+                console.log("Email sent: " + info.response);
+            }
+        });
+
+        res.status(200).json({
+            status: true,
+            message: "Password reset email sent"
+        });
+    } catch (error) {
+        next(createError(500, error.message));
+    }
+};
+exports.resetPassword = async (req, res, next) => {
+    const { id,token } = req.params;
+    const { password } = req.body;
+
+    try {
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+        const { email } = decoded;
+
+        const user = await UserModel.findOne({ email });
+        if (!user) {
+            return next(createError(404, "User not found"));
+        }
+      
+       // Hachage du mot de passe
+       const salt = await bcrypt.genSalt(16);
+       const hashedPassword = await bcrypt.hash(password, salt);
+
+       await UserModel.findByIdAndUpdate(id, { password: hashedPassword });
+
+        res.status(200).json({
+            status: true,
+            message: "Password reset successfully"
+        });
+    } catch (error) {
+        next(createError(500, error.message));
+    }
+};
+
+/*exports.resetPassword = async (req, res, next) => {
+    const { token } = req.params;
+    const { newPassword } = req.body;
+
+    try {
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+        const { email } = decoded;
+
+        const user = await UserModel.findOne({ email });
+        if (!user) {
+            return next(createError(404, "User not found"));
+        }
+
+      //  const hashedPassword = await bcrypt.hash(newPassword, 10);
+        user.password = newPassword;
+        await user.save();
+
+        res.status(200).json({
+            status: true,
+            message: "Password reset successfully"
+        });
+    } catch (error) {
+        next(createError(500, error.message));
+    }
+};
+/**exports.forgotPassword = async (req, res) => {
     try {
         const {email} = req.body
         const user = await UserModel.findOne({email})
@@ -506,7 +607,7 @@ exports.forgotPassword = async (req, res) => {
         const access_token = createAccessToken({id: user._id})
         const url = `${CLIENT_URL}/reset/${access_token}`
 
-        sendMail(email, url, "Reset your password")
+        sendMail1(email, url, "Reset your password")
         res.json({msg: "Re-send the password, please check your email."})
     } catch (err) {
         return res.status(500).json({msg: err.message})
@@ -527,7 +628,7 @@ exports.resetPassword = async (req, res) => {
         return res.status(500).json({msg: err.message})
     }
 },
-
+*/
 /*exports.updateUser = async (req, res, next) => {
     const data = req.body;
     try {

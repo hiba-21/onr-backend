@@ -17,8 +17,10 @@ app.get("/*",(req,res) => {
     res.sendFile("index.html",{root : disPath})
 });*/
 app.use(express.static(path.join(__dirname, "./public", "../public")));
+
 app.use(express.json());
 //app.use(cors("*"))
+
 app.use(
     cors({
         origin: ["https://onrtech-front.vercel.app"],

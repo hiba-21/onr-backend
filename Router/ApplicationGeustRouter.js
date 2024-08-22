@@ -10,7 +10,7 @@ const ApplicationController = require("../Controller/ApplicationController");
 
 // Middlewares
 const { checkInput } = require("../Validation/ApplicationDataRules");
-//const { checkGuestApplications } = require("../middleware/GuestMiddleware");
+const { checkGuestApplications } = require("../middleware/GuestMiddleware");
 const {
     inputValidationMiddleware,
 } = require("../Validation/ValidationMiddleware");
@@ -20,12 +20,6 @@ const upload = multer({ storage: multer.memoryStorage() }); // Utilisez la mémo
 
 // Route pour appliquer en tant que guest
 ApplicationRouter.post("/applyGeust", upload.single('resume'), ApplicationController.applyForGuest);
-/*ApplicationRouter.post(
-    "/applyGeust",
-    inputValidationMiddleware,
-    checkGuestApplications, // Middleware pour vérifier les applications des invités
-    ApplicationController.applyForGuest
-);
-*/
+ApplicationRouter.post("/setPassword/:id/:token",  ApplicationController.setPassword);
 
 module.exports = ApplicationRouter;

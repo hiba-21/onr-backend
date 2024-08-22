@@ -40,7 +40,7 @@ AuthRouter.post(
 );
 
 AuthRouter.post("/forgot", checkForgotPasswordInput, UserController.forgotPassword);
-AuthRouter.post("/reset/:token",  UserController.resetPassword);
+AuthRouter.post("/reset/:id/:token",  UserController.resetPassword);
 
 /* Social Login */
 AuthRouter.post("/google_login", UserController.googleLogin);
